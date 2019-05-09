@@ -1,59 +1,30 @@
 #
+# Fibonacci
 #
-#
-#
-#
-#
+# Full credit for this code goes to Braxton Lemmon.
+# included here so I have an example of a very 
+# elegant solution.
 #
 
-def fib(index)
-  retval = 0
-  fib = [0,1,1];
-  
-  if index <= 1
-    retval = index
-  elsif index == 2
-    retval = 1
-  else
-    (3..index).each {|i|
-      fib.push(fib[i-1] + fib[i-2])
-    }
-    retval = fib[index]
-  end
-  retval
+
+# Fibonacci with iteration
+
+def fibs(n)
+	(0..n).each_with_object([]) do |num, array|
+		num < 2 ? (array << num) : (array << array[num-1] + array[num-2])
+	end
 end
 
-def fibs(index)
-  retval = []
-
-  (0..index).each {|x|
-    retval.push(fib(x))
-  }
-  retval
-end
-
-def fib_rec(index)
-  retval = 0
-
-  if index == 0
-    retval = 0
-  elsif index <= 2
-    retval = 1
-  else
-    retval = fib_rec(index - 1) + fib_rec(index - 2)
-  end
-  
-  retval
-end
-
-def fibs_rec(index)
-  retval = []
-  (0..index).each {|i|
-    retval.push(fib_rec(i))
-  }
-  retval
-end
-
+p fibs(5)
 p fibs(10)
-p fibs_rec(10)
 
+# Fibonacci with recursion
+
+def fibs_rec(n, array = [0,1])
+	return array if n < 2
+	array << array[-1] + array[-2]
+	fibs_rec(n-1, array)
+end
+
+p fibs_rec(5)
+p fibs_rec(10)
