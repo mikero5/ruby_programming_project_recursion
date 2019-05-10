@@ -1,61 +1,31 @@
 # 
 # Merge Sort
 # 
+# Full credit for this code goes to Braxton Lemmon.
+# (I'm 'refactoring' to his code so I have a good example for future reference).
 # 
-# 
-# 
-
-def split(array)
-  temp = array
-  b = temp.slice!(0, temp.length/2)
-  return b, temp
-end
-
-def merge(array1, array2)
-  a1 = array1.flatten
-  a2 = array2.flatten
-  retval = []
-  last = a1.length + a2.length
-
-  (0..last).each {|i|
-    if a1.length == 0
-      return [retval, a2].flatten
-    elsif a2.length == 0
-      return [retval, a1].flatten
-    else
-      val = [a1[0], a2[0]].min
-      retval.push(val)
-      if a1[0] == val
-        a1.shift
-      else
-        a2.shift
-      end
-    end
-  }
-  retval
-end
 
 def merge_sort(array)
-  retval = []
-  if(array.length > 1)
-    a, b = split(array)
-    if a.length == 1 && b.length == 1
-      return [[a,b].min, [a,b].max]
-    elsif a.length == 1 && b.length == 0
-      return a
-    elsif b.length == 1 && a.length == 0
-      return b
-    else
-      a = merge_sort(a)
-      b = merge_sort(b)
-      retval = merge(a,b)
-    end
-  else
-    return array
-  end
-  retval
+	return array if array.length == 1
+	n = array.length
+	left = merge_sort(array[0..((n/2)-1)])
+	right = merge_sort(array[n/2..-1])
+	array2 = []
+	(left.length + right.length).times do
+		if left.empty? && right[0].class == Integer
+			array2 << right.shift
+		elsif right.empty? && left[0].class == Integer
+			array2 << left.shift
+		elsif right[0] < left[0]
+			array2 << right.shift
+		elsif left[0] < right[0]
+			array2 << left.shift
+		end
+	end
+	return array2
 end
 
-p merge_sort([9,8,7,6,5,4,3,2,1])
-p merge_sort([5,9,4,8,6,7,3,1])
-p merge_sort([7])
+
+p merge_sort([14,4,20,1,3,7,15,9]) # => [1,3,4,7,9,14,15,20]
+p merge_sort([6]) # => [6]
+p merge_sort([4,22,88,1,99,203,6,16,25]) # => [1,4,6,16,22,25,88,99,203]
